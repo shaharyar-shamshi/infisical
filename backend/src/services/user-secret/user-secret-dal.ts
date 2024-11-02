@@ -154,7 +154,7 @@ export const userSecretDALFactory = (db: TDbClient) => {
     }
   };
 
-  const update = async (id: string, data: { name?: string; description?: string }, tx?: Knex) => {
+  const update = async (id: string, data: { name?: string; description?: string; type?: string }, tx?: Knex) => {
     const queryBuilder = tx || db;
     await queryBuilder(TableName.UserSecret).where({ id }).update(data);
   };

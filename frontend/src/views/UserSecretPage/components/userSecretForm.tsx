@@ -300,17 +300,28 @@ export const UserSecretForm = ({ mode = 'create', initialData, secretId, onSucce
             isRequired
             children={undefined}
           >
-            <Select 
-              {...restField}
-              value={value}
-              onValueChange={onChange}
-              position="popper"
-              className="w-full min-w-[240px]"
-            >
-              <SelectItem value={CredentialType.WEB_LOGIN}>Web Login</SelectItem>
-              <SelectItem value={CredentialType.CREDIT_CARD}>Credit Card</SelectItem>
-              <SelectItem value={CredentialType.SECURE_NOTE}>Secure Note</SelectItem>
-            </Select>
+            {mode === 'edit' ? (
+              <Input 
+                value={value === CredentialType.WEB_LOGIN ? 'Web Login' : 
+                       value === CredentialType.CREDIT_CARD ? 'Credit Card' : 
+                       'Secure Note'}
+                type="text"
+                disabled
+              />
+            ) : (
+                <Select 
+                {...restField}
+                value={value}
+                onValueChange={onChange}
+                position="popper"
+                className="w-full min-w-[240px]"
+              >
+                <SelectItem value={CredentialType.WEB_LOGIN}>Web Login</SelectItem>
+                <SelectItem value={CredentialType.CREDIT_CARD}>Credit Card</SelectItem>
+                <SelectItem value={CredentialType.SECURE_NOTE}>Secure Note</SelectItem>
+              </Select>
+             
+            )}
           </FormControl>
         )}
       />

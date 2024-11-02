@@ -242,7 +242,8 @@ export const userSecretServiceFactory = ({
     cardNumber,
     cardholderName,
     content,
-    title
+    title,
+    secretType
   }: TUpdateUserSecretDTO) => {
     const { permission } = await permissionService.getOrgPermission(
       actor,
@@ -256,6 +257,10 @@ export const userSecretServiceFactory = ({
     const secret = await userSecretDAL.findById(secretId);
     if (!secret) throw new NotFoundError({ message: "Secret not found" });
 
+    if (secretType !== undefined && secretType !== secret.type) {
+      throw new BadRequestError({ message: "Cannot change secret type" });
+    }
+
     if (secret.userId !== actorId || secret.orgId !== actorOrgId) {
       throw new ForbiddenRequestError({ message: "User does not have permission to update this secret" });
     }
@@ -264,14 +269,17 @@ export const userSecretServiceFactory = ({
 
     const id = secretId;
 
-    const updateData: { name?: string; description?: string } = {};
+    const updateData: { name?: string; description?: string; type?: string } = {};
     if (name !== undefined) updateData.name = name;
     if (description !== undefined) updateData.description = description;
+    if (secretType !== undefined) updateData.type = secretType;
+
+    const type = secretType || secret.type;
 
     await userSecretDAL.update(id, updateData);
 
     // Update type-specific details
-    switch (secret.type) {
+    switch (type) {
       case TUserSecretType.WebLogin:
         if (password || userName || website !== undefined) {
           const encryptedPassword = password ? encryptWithRoot(Buffer.from(password)) : undefined;
