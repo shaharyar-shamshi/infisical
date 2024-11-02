@@ -84,7 +84,7 @@ export const UserSecretsTable = ({ handlePopUpOpen, credentialTypeFilter, search
             <Th>Name</Th>
             <Th>Description</Th>
             <Th>Type</Th>
-            <Th>Created</Th>
+            <Th>Created At</Th>
             <Th aria-label="button" className="w-5" />
           </Tr>
         </THead>
