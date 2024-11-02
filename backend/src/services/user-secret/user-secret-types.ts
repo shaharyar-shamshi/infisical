@@ -71,6 +71,7 @@ export type TGetUserSecretsDTO = {
   username?: string;
   website?: string;
   password?: string;
+  searchQuery?: string;
 };
 
 export type TGetUserSecretByIdDTO = {
